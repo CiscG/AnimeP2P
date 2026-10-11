@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Share P2P</title>
+    <style>
+        :root {
+            --bg: #1a1a1a;
+            --panel: #2b2b2b;
+            --field: #222;
+            --border: #555;
+            --accent: #ff4757;
+            --accent-hover: #ff6b81;
+            --text: #fff;
+            --muted: #aaa;
+            --ok: #2ed573;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h2 { margin-top: 0; }
+
+        video {
+            display: block;
+            width: 90%;
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            background: black;
+            margin: 20px auto 0;
+            border-radius: 8px;
+        }
+
+        .controls {
+            margin: 20px auto 0;
+            padding: 15px 20px;
+            background: var(--panel);
+            border-radius: 8px;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        button, input {
+            padding: 10px 14px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.15s;
+        }
+        button:hover:not(:disabled) { background-color: var(--accent-hover); }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        button.secondary { background-color: #444; }
+        button.secondary:hover:not(:disabled) { background-color: #555; }
+
+        input {
+            background: var(--field);
+            color: var(--text);
+            border: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 220px;
+        }
+        input::placeholder { text-transform: none; letter-spacing: normal; }
+
+        #my-id {
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            font-family: ui-monospace, Consolas, monospace;
+        }
+
+        hr { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
+
+        #status {
+            margin: 16px auto 0;
+            padding: 10px 14px;
+            max-width: 600px;
+            border-radius: 6px;
+            background: var(--panel);
+            border-left: 4px solid var(--muted);
+            min-height: 1.5em;
+            text-align: left;
+        }
+        #status.ok { border-left-color: var(--ok); }
+        #status.erro { border-left-color: var(--accent); }
+
+        .hint { color: var(--muted); font-size: 0.85rem; margin: 6px 0 0; }
+        #viewers { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <h2>📺 Anime Share P2P</h2>
+
+    <div class="controls">
+        <div class="row">
+            <span>Seu código:</span>
+            <strong id="my-id">...</strong>
+            <button id="btn-copy" class="secondary" disabled>Copiar</button>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <button id="btn-share" disabled>1. Compartilhar Tela (Host)</button>
+        </div>
+        <div id="viewers"></div>
+        <p class="hint">
+            Para ter áudio, escolha uma <strong>aba</strong> no Chrome/Edge e marque
+            "Compartilhar áudio da aba". No Firefox, compartilhe a tela inteira com áudio do sistema.
+        </p>
+
+        <hr>
+
+        <div class="row">
+            <input type="text" id="host-id" placeholder="Código do Host"
+                   autocomplete="off" maxlength="40" spellcheck="false">
+            <button id="btn-connect" disabled>2. Assistir (Viewer)</button>
+        </div>
+    </div>
+
+    <div id="status" role="status" aria-live="polite">Iniciando...</div>
+
+    <video id="video-player" autoplay playsinline controls></video>
+
+    <div class="row" style="margin-top: 12px;">
+        <button id="btn-sound" class="secondary" hidden>🔊 Ativar som</button>
+    </div>
+
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
